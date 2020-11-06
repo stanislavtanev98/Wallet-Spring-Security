@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<!-- Behaviour -->
+<script sec:authorize="hasRole('USER')">
+  $(document).on("click", ".open-delete-dialog", function () {
+    $("#deleteId").val($(this).data('id'));
+  });
+</script>
+<!-- EO: Behaviour-->
+
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar('incomes-all')">Navbar here</div>
+<!-- EO: Navbar -->
+
+<div class="my-2 d-flex justify-content-center">
+    <h2>Welcome to the incomes board!</h2>
+</div>
+
+<div class="offers row mx-auto d-flex flex-col justify-content-center">
+    <div th:object="${income}"
+         th:each="income: ${incomes}"
+         class="offer card col-sm-6 col-md-4  col-lg-3 m-1 p-0">
+        <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <div class="col-14">
+                    <span th:text="|*{#strings.capitalize(#strings.toLowerCase(category))}">Category</span>
+                    <hr/>
+                    <small>
+                        <em>
+                            (last updated on <span th:text="*{#temporals.format(createdOn, 'HH:mm dd-MM-yyyy')}">1979-03-07</span>)
+                        </em>
+                    </small>
+                </div>
+                <div sec:authorize="hasRole('USER')">
+                    <button type="button"
+                            class="open-delete-dialog btn btn-primary"
+                            data-toggle="modal"
+                            data-target="#deleteModal"
+                            th:data-id="*{id}">
+                        <i class="fas fa-trash mx-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p th:text="'Amount: ' + '$' + *{amount}" class="card-text"></p>
+        </div>
+    </div>
+</div>
+
+<div sec:authorize="hasRole('USER')">
+    <a class="new-button btn btn-primary rounded-circle" th:href="@{/wallet/income/new}" role="button">
+        <i class="fas fa-plus"></i>
+    </a>
+</div>
+
+<!--&lt;!&ndash; Delete announcement&ndash;&gt;-->
+<!--<div sec:authorize="hasRole('USER')" th:replace="expense/delete :: delete-expense">-->
+<!--    Modal dialog for delete-->
+<!--</div>-->
+<!-- EO: Delete announcement-->
+
+<!-- Bootstap JS -->
+<div th:replace="fragments/bootstrap-js :: bootstrap-js"></div>
+<!-- EO: Bootstap JS -->
+
+</body>
+</html>

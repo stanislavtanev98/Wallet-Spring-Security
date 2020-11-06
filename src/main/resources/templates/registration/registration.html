@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<div class="container center">
+  <div class="card">
+    <article class="card-body">
+      <a th:href="@{/login}" class="float-right btn btn-outline-primary">Sign in</a>
+      <h3 class="card-title mb-4 mt-1">Register</h3>
+      <form th:action="@{/registration}" method="post" th:object="${formData}">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+              name="email"
+              th:value="*{email}"
+              th:errorclass="is-invalid"
+              type="email"
+              placeholder="Email"
+              class="form-control"
+              id="email"/>
+          <div class="invalid-feedback">
+            The user email should be valid and such user should not exist in the system.
+          </div>
+        </div>
+        <!-- form-group// -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+              name="password"
+              type="password"
+              th:errorclass="is-invalid"
+              placeholder="Password"
+              class="form-control"
+              id="password"/>
+          <div class="invalid-feedback">
+            Both passwords should match.
+          </div>
+        </div> <!-- form-group// -->
+        <div class="form-group">
+          <label for="repeatPassword">Repeat Password</label>
+          <input
+              name="repeatPassword"
+              type="password"
+              th:errorclass="is-invalid"
+              placeholder="Repeat password"
+              class="form-control"
+              id="repeatPassword"/>
+          <div class="invalid-feedback">
+            Both passwords should match.
+          </div>
+        </div>
+        <!-- form-group// -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </div> <!-- form-group// -->
+          </div>
+        </div> <!-- .row// -->
+      </form>
+    </article>
+  </div> <!-- card.// -->
+
+  <!-- Bootstap JS -->
+  <div th:replace="fragments/bootstrap-js :: bootstrap-js"></div>
+  <!-- EO: Bootstap JS -->
+</div>
+</body>
+</html>

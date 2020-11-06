@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar('income')">Navbar here</div>
+<!-- EO: Navbar -->
+
+<div class="my-2 d-flex justify-content-center">
+    <h2>Its that wonderful time of the month.Add your money!</h2>
+</div>
+
+<div class="container">
+    <form th:action="@{/wallet/income/save}" method="post" th:object="${income}"
+          class="mx-auto col-md-6 d-flex flex-column justify-content-center">
+
+        <div class="form-group ">
+            <label for="category">Category</label>
+            <select class="browser-default custom-select"
+                    id="category"
+                    name="category"
+                    th:errorclass="is-invalid">
+                <option value="">Select type</option>
+                <option th:each="i : ${T(bg.income.model.IncomeCategory).values()}"
+                        th:text="${#strings.capitalize(#strings.toLowerCase(i))}"
+                        th:value="${i}">Expense Type
+                </option>
+            </select>
+            <div class="invalid-feedback">
+                Please select type.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number"
+                   class="form-control"
+                   id="amount"
+                   name="amount"
+                   th:errorclass="is-invalid"/>
+            <div class="invalid-feedback">
+                You should enter a valid amount.
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add money</button>
+    </form>
+</div>
+
+<!-- Bootstap JS -->
+<div th:replace="fragments/bootstrap-js :: bootstrap-js"></div>
+<!-- EO: Bootstap JS -->
+
+</body>
+</html>
