@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/head :: head"></head>
 <body>
 
@@ -7,7 +8,7 @@
 <div th:replace="fragments/navbar :: navbar('income')">Navbar here</div>
 <!-- EO: Navbar -->
 
-<div class="my-2 d-flex justify-content-center">
+<div class="my-2 d-flex justify-content-center text-primary">
     <h2>Its that wonderful time of the month.Add your money!</h2>
 </div>
 
@@ -46,6 +47,52 @@
 
         <button type="submit" class="btn btn-primary">Add money</button>
     </form>
+</div>
+
+<hr/>
+<div>
+    <h2 class="text-center text-primary">Your last incomes
+        <span th:unless="${#lists.isEmpty(incomes3)}">
+    <a th:href="@{/wallet/incomes/all}" class="float-right btn btn-outline-primary">All Incomes</a>
+    </span>
+    </h2>
+</div>
+<span th:if="${#lists.isEmpty(incomes3)}">
+    <div class="text-center text-primary">
+        <h2>You don't have an incomes yet.</h2>
+    </div>
+</span>
+<div class="offers row mx-auto d-flex flex-col justify-content-center">
+    <div th:object="${inc}"
+         th:each="inc: ${incomes3}"
+         class="offer card col-sm-6 col-md-4  col-lg-3 m-1 p-0">
+        <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <div class="col-14">
+                    <span th:text="|*{#strings.capitalize(#strings.toLowerCase(category))}">Category</span>
+                    <hr/>
+                    <small>
+                        <em>
+                            (last updated on <span th:text="*{#temporals.format(createdOn, 'HH:mm dd-MM-yyyy')}">1979-03-07</span>)
+                        </em>
+                    </small>
+                </div>
+                <div sec:authorize="hasRole('USER')">
+                    <button type="button"
+                            class="open-delete-dialog btn btn-primary"
+                            data-toggle="modal"
+                            data-target="#deleteModal"
+                            th:data-id="*{id}">
+                        <i class="fas fa-trash mx-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p th:text="'Amount: ' + '$' + *{amount}" class="card-text"></p>
+        </div>
+    </div>
 </div>
 
 <!-- Bootstap JS -->

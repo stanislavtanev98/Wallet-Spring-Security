@@ -13,13 +13,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/wallet")
@@ -34,7 +35,6 @@ public class IncomeController {
     @GetMapping("/incomes/all")
     public String allIncomes(Model model){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        // TODO: if there is no such user
 
         UserEntity user = userService.getOrCreateUser(email);
         UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
@@ -53,6 +53,12 @@ public class IncomeController {
         } else {
             incomeBindingModel = new IncomeBindingModel();
         }
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userService.getOrCreateUser(email);
+        UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
+        List<IncomeServiceModel> incomes = new ArrayList<>(incomeService.getLast3Incomes(userServiceModel));
+        model.addAttribute("incomes3", incomes);
 
         model.addAttribute("income", incomeBindingModel);
         return "income/new";
@@ -75,6 +81,12 @@ public class IncomeController {
 
         incomeService.addMoney(userServiceModel, modelMapper.map(incomeBindingModel, IncomeServiceModel.class));
 
+        return "redirect:/wallet/incomes/all";
+    }
+
+    @DeleteMapping("/income/delete")
+    public String delete(@ModelAttribute(name = "deleteId") String deleteId) {
+        incomeService.delete(deleteId);
         return "redirect:/wallet/incomes/all";
     }
 }

@@ -7,7 +7,7 @@
   <div class="card">
     <article class="card-body">
       <a th:href="@{/login}" class="float-right btn btn-outline-primary">Sign in</a>
-      <h3 class="card-title mb-4 mt-1">Register</h3>
+      <h3 class="card-title mb-4 mt-1">Registration</h3>
       <form th:action="@{/registration}" method="post" th:object="${formData}">
         <div class="form-group">
           <label for="email">Email</label>
@@ -16,8 +16,8 @@
               th:value="*{email}"
               th:errorclass="is-invalid"
               type="email"
-              placeholder="Email"
-              class="form-control"
+              placeholder="Enter Email"
+              class="form-control validate"
               id="email"/>
           <div class="invalid-feedback">
             The user email should be valid and such user should not exist in the system.

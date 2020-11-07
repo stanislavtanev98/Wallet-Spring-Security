@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         }
 
         RoleEntity userRole = new RoleEntity();
-        userRole.setRole("USER_ROLE");
+        userRole.setRole("ROLE_USER");
 
         userEntity.setRoles(List.of(userRole));
 

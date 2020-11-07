@@ -55,16 +55,15 @@
 </div>
 
 <div sec:authorize="hasRole('USER')">
-    <a class="new-button btn btn-primary rounded-circle" th:href="@{/wallet/income/new}" role="button">
+    <a class="new-button btn btn-primary rounded-circle" th:href="@{/wallet/income}" role="button">
         <i class="fas fa-plus"></i>
     </a>
 </div>
 
-<!--&lt;!&ndash; Delete announcement&ndash;&gt;-->
-<!--<div sec:authorize="hasRole('USER')" th:replace="expense/delete :: delete-expense">-->
-<!--    Modal dialog for delete-->
-<!--</div>-->
-<!-- EO: Delete announcement-->
+<!-- Delete announcement-->
+<div sec:authorize="hasRole('USER')" th:replace="income/delete :: delete-income">
+    Modal dialog for delete
+</div>
 
 <!-- Bootstap JS -->
 <div th:replace="fragments/bootstrap-js :: bootstrap-js"></div>

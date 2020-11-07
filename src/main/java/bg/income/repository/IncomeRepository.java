@@ -12,4 +12,5 @@ import java.util.Collection;
 public interface IncomeRepository extends JpaRepository<IncomeEntity, String> {
 
     Collection<IncomeEntity> findByWallet(WalletEntity walletEntity);
+
 }

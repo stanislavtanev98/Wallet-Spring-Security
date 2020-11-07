@@ -34,7 +34,6 @@ public class ExpenseController {
     @GetMapping("/expenses/all")
     public String allExpenses(Model model){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        // TODO: if there is no such user
 
         UserEntity user = userService.getOrCreateUser(email);
         UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
@@ -53,6 +52,11 @@ public class ExpenseController {
         } else {
             expenseBindingModel = new ExpenseBindingModel();
         }
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userService.getOrCreateUser(email);
+        UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
+        model.addAttribute("expenses3", expenseService.getLast3Expenses(userServiceModel));
 
         model.addAttribute("expense", expenseBindingModel);
         return "expense/new";

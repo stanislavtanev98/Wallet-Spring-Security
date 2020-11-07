@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,5 +54,29 @@ public class IncomeServiceImpl implements IncomeService {
         return incomes.stream()
                 .map(i -> modelMapper.map(i, IncomeServiceModel.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<IncomeServiceModel> getLast3Incomes(UserServiceModel userServiceModel) {
+        WalletEntity wallet = modelMapper.map(walletService.getWalletByUser(userServiceModel), WalletEntity.class);
+        Collection<IncomeEntity> incomes = incomeRepository.findByWallet(wallet);
+
+        return incomes.stream()
+                .map(i -> modelMapper.map(i, IncomeServiceModel.class))
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(String deleteId) {
+        IncomeEntity income = incomeRepository.findById(deleteId).orElse(null);
+        if(income != null) {
+            WalletEntity wallet = income.getWallet();
+            StatisticEntity statistic = wallet.getStatistic();
+            statistic.setTotalIncomes(statistic.getTotalExpenses().subtract(income.getAmount()));
+            statistic.setCurrentAmount(statistic.getCurrentAmount().subtract(income.getAmount()));
+            statisticService.updateStatistic(modelMapper.map(statistic, StatisticServiceModel.class));
+        }
+        incomeRepository.deleteById(deleteId);
     }
 }

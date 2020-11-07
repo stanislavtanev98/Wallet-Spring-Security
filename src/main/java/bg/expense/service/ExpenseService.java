@@ -13,4 +13,6 @@ public interface ExpenseService {
     ExpenseServiceModel expenseMoney(UserServiceModel userServiceModel, ExpenseServiceModel expenseServiceModel);
 
     Collection<ExpenseServiceModel> getUserExpenses(UserServiceModel userServiceModel);
+
+    Collection<ExpenseServiceModel> getLast3Expenses(UserServiceModel userServiceModel);
 }

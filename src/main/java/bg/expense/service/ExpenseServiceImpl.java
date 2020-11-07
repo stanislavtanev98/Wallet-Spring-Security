@@ -57,5 +57,16 @@ public class ExpenseServiceImpl implements ExpenseService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Collection<ExpenseServiceModel> getLast3Expenses(UserServiceModel userServiceModel) {
+        WalletEntity wallet = modelMapper.map(walletService.getWalletByUser(userServiceModel), WalletEntity.class);
+        Collection<ExpenseEntity> expenses = expenseRepository.findByWallet(wallet);
+
+        return expenses.stream()
+                .map(e -> modelMapper.map(e, ExpenseServiceModel.class))
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
 
 }

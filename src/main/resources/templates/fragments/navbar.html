@@ -38,10 +38,10 @@
             <li class="nav-item" th:classappend="${activeTab == 'expense'}? 'active'">
                 <a class="nav-link" th:href="@{/wallet/expense}">Expense</a>
             </li>
-            <li sec:authorize="hasRole('ADMIN')" class="nav-item" th:classappend="${activeTab == 'incomes-all'}? 'active'">
+            <li class="nav-item" th:classappend="${activeTab == 'incomes-all'}? 'active'">
                 <a class="nav-link" th:href="@{/wallet/incomes/all}">All Incomes</a>
             </li>
-            <li sec:authorize="hasRole('ADMIN')" class="nav-item" th:classappend="${activeTab == 'expenses-all'}? 'active'">
+            <li class="nav-item" th:classappend="${activeTab == 'expenses-all'}? 'active'">
                 <a class="nav-link" th:href="@{/wallet/expenses/all}">All Expenses</a>
             </li>
         </ul>
